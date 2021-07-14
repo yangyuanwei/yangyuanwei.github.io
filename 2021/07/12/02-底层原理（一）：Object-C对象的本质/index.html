@@ -6,15 +6,15 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yangyuanweitech.com">
-  <title>底层原理（一）：Object-C对象的本质 | YYW’s Blog</title>
+  <title>底层原理（一）：Object-C对象的本质 | YYW&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="前沿我们平时编写的Object-C代码，底层实现都是C&#x2F;C++代码  所以Object-C的面向对象都是C&#x2F;C++的数据结构 思考🤔 思考1：Object-C的对象、类主要都是基于C&#x2F;C++的什么数据结构实现的？ 思考2：一个OC对象在内存中是怎样布局的？ 思考3：一个复杂的有继承结构的类的实例对象在内存中是怎样布局的？ 思考4：创建一个实例对象，至少需要多少内存？  探究NSObject对象的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="底层原理（一）：Object-C对象的本质">
 <meta property="og:url" content="http://yangyuanweitech.com/2021/07/12/02-%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9AObject-C%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%9C%AC%E8%B4%A8/index.html">
-<meta property="og:site_name" content="YYW’s Blog">
+<meta property="og:site_name" content="YYW&#39;s blog">
 <meta property="og:description" content="前沿我们平时编写的Object-C代码，底层实现都是C&#x2F;C++代码  所以Object-C的面向对象都是C&#x2F;C++的数据结构 思考🤔 思考1：Object-C的对象、类主要都是基于C&#x2F;C++的什么数据结构实现的？ 思考2：一个OC对象在内存中是怎样布局的？ 思考3：一个复杂的有继承结构的类的实例对象在内存中是怎样布局的？ 思考4：创建一个实例对象，至少需要多少内存？  探究NSObject对象的">
-<meta property="og:locale">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yangyuanweitech.com/2021/07/12/02-%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9AObject-C%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%9C%AC%E8%B4%A8/16255785977868.png">
 <meta property="og:image" content="http://yangyuanweitech.com/2021/07/12/02-%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9AObject-C%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%9C%AC%E8%B4%A8/16256510646559.png">
 <meta property="og:image" content="http://yangyuanweitech.com/2021/07/12/02-%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9AObject-C%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%9C%AC%E8%B4%A8/16256324158486.png">
@@ -33,7 +33,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://yangyuanweitech.com/2021/07/12/02-%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9AObject-C%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%9C%AC%E8%B4%A8/16255785977868.png">
   
-    <link rel="alternative" href="/atom.xml" title="YYW’s Blog" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="YYW&#39;s blog" type="application/atom+xml">
   
   
     <link rel="icon" href="/assets/img/favicon.ico">
@@ -63,8 +63,10 @@
 			<img src="/assets/blogImg/yangyuanwei.png" class="js-avatar">
 		</a>
 		<hgroup>
-		  <h1 class="header-author"><a href="/"></a></h1>
+		  <h1 class="header-author"><a href="/">yangyuanwei</a></h1>
 		</hgroup>
+		
+		<p class="header-subtitle">读书和运动总有一个在路上</p>
 		
 
 		<nav class="header-menu">
@@ -117,8 +119,10 @@
 				<img src="/assets/blogImg/yangyuanwei.png" class="js-avatar">
 			</div>
 			<hgroup>
-			  <h1 class="header-author js-header-author"></h1>
+			  <h1 class="header-author js-header-author">yangyuanwei</h1>
 			</hgroup>
+			
+			<p class="header-subtitle"><i class="icon icon-quo-left"></i>读书和运动总有一个在路上<i class="icon icon-quo-right"></i></p>
 			
 			
 			
