@@ -6,15 +6,24 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yangyuanweitech.com">
-  <title>Category: 技术积累 | YYW&#39;s blog</title>
+  <title>底层原理(四) ：Class的底层结构 | YYW&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="YYW&#39;s blog">
-<meta property="og:url" content="http://yangyuanweitech.com/categories/%E6%8A%80%E6%9C%AF%E7%A7%AF%E7%B4%AF/index.html">
+  <meta name="description" content="isa指针  从64bit开始，isa需要进行一次位运算(&amp;ISA_Mask)，才能计算出真实地址。 define ISA_MASK        0x0000000ffffffff8ULL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="底层原理(四) ：Class的底层结构">
+<meta property="og:url" content="http://yangyuanweitech.com/2021/07/19/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86-%E5%9B%9B-%EF%BC%9AClass%E7%9A%84%E5%BA%95%E5%B1%82%E7%BB%93%E6%9E%84/index.html">
 <meta property="og:site_name" content="YYW&#39;s blog">
+<meta property="og:description" content="isa指针  从64bit开始，isa需要进行一次位运算(&amp;ISA_Mask)，才能计算出真实地址。 define ISA_MASK        0x0000000ffffffff8ULL">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yangyuanweitech.com/2021/07/19/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86-%E5%9B%9B-%EF%BC%9AClass%E7%9A%84%E5%BA%95%E5%B1%82%E7%BB%93%E6%9E%84/isa.png">
+<meta property="og:image" content="http://yangyuanweitech.com/2021/07/19/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86-%E5%9B%9B-%EF%BC%9AClass%E7%9A%84%E5%BA%95%E5%B1%82%E7%BB%93%E6%9E%84/ISA_MASK.png">
+<meta property="og:image" content="http://yangyuanweitech.com/2021/07/19/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86-%E5%9B%9B-%EF%BC%9AClass%E7%9A%84%E5%BA%95%E5%B1%82%E7%BB%93%E6%9E%84/objc_class%E7%BB%93%E6%9E%84.png">
+<meta property="article:published_time" content="2021-07-19T08:45:22.000Z">
+<meta property="article:modified_time" content="2021-07-19T12:54:26.430Z">
 <meta property="article:author" content="yangyuanwei">
+<meta property="article:tag" content="iOS底层原理">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yangyuanweitech.com/2021/07/19/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86-%E5%9B%9B-%EF%BC%9AClass%E7%9A%84%E5%BA%95%E5%B1%82%E7%BB%93%E6%9E%84/isa.png">
   
     <link rel="alternative" href="/atom.xml" title="YYW&#39;s blog" type="application/atom+xml">
   
@@ -156,36 +165,67 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-底层原理-四-：Class的底层结构" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      底层原理(四) ：Class的底层结构
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/07/19/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86-%E5%9B%9B-%EF%BC%9AClass%E7%9A%84%E5%BA%95%E5%B1%82%E7%BB%93%E6%9E%84/" class="archive-article-date">
+
+        
+        <a href="/2021/07/19/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86-%E5%9B%9B-%EF%BC%9AClass%E7%9A%84%E5%BA%95%E5%B1%82%E7%BB%93%E6%9E%84/" class="archive-article-date">
   	<time datetime="2021-07-19T08:45:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-19</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/07/19/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86-%E5%9B%9B-%EF%BC%9AClass%E7%9A%84%E5%BA%95%E5%B1%82%E7%BB%93%E6%9E%84/">底层原理(四) ：Class的底层结构</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="isa指针"><a href="#isa指针" class="headerlink" title="isa指针"></a>isa指针</h2><blockquote>
+<ul>
+<li>从64bit开始，isa需要进行一次位运算(&amp;ISA_Mask)，才能计算出真实地址。</li>
+<li>define ISA_MASK        0x0000000ffffffff8ULL</li>
+</ul>
+</blockquote>
+<img src="/2021/07/19/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86-%E5%9B%9B-%EF%BC%9AClass%E7%9A%84%E5%BA%95%E5%B1%82%E7%BB%93%E6%9E%84/isa.png" class="">
 
-        <div class="article-info info-on-right">
-          
+<span id="more"></span>
+
+<h2 id="objc4源码下载"><a href="#objc4源码下载" class="headerlink" title="objc4源码下载"></a>objc4源码下载</h2><p>查看<a target="_blank" rel="noopener" href="https://opensource.apple.com/tarballs/objc4/">objc4源码</a><br>打开obj4源码搜索 ISA_Mask ,可以看到 ISA_MASK的定义</p>
+<img src="/2021/07/19/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86-%E5%9B%9B-%EF%BC%9AClass%E7%9A%84%E5%BA%95%E5%B1%82%E7%BB%93%E6%9E%84/ISA_MASK.png" class="">
+
+<p>精简源码如下：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">if</span> __arm64__</span></span><br><span class="line"><span class="meta">#   <span class="meta-keyword">define</span> ISA_MASK        0x0000000ffffffff8ULL</span></span><br><span class="line"><span class="meta">#   <span class="meta-keyword">define</span> ISA_MAGIC_MASK  0x000003f000000001ULL</span></span><br><span class="line"><span class="meta">#   <span class="meta-keyword">define</span> ISA_MAGIC_VALUE 0x000001a000000001ULL</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># <span class="meta-keyword">elif</span> __x86_64__</span></span><br><span class="line"><span class="meta">#   <span class="meta-keyword">define</span> ISA_MASK        0x00007ffffffffff8ULL</span></span><br><span class="line"><span class="meta">#   <span class="meta-keyword">define</span> ISA_MAGIC_MASK  0x001f800000000001ULL</span></span><br><span class="line"><span class="meta">#   <span class="meta-keyword">define</span> ISA_MAGIC_VALUE 0x001d800000000001ULL</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="窥探struct-objc-class的结构"><a href="#窥探struct-objc-class的结构" class="headerlink" title="窥探struct objc_class的结构"></a>窥探struct objc_class的结构</h2><img src="/2021/07/19/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86-%E5%9B%9B-%EF%BC%9AClass%E7%9A%84%E5%BA%95%E5%B1%82%E7%BB%93%E6%9E%84/objc_class%E7%BB%93%E6%9E%84.png" class="">
+
+<h4 id="struct-objc-object"><a href="#struct-objc-object" class="headerlink" title="struct objc_object"></a>struct objc_object</h4><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> objc_object &#123;</span><br><span class="line">    Class _Nonnull isa  OBJC_ISA_AVAILABILITY;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="struct-objc-class"><a href="#struct-objc-class" class="headerlink" title="struct objc_class"></a>struct objc_class</h4><p>objc_class继承自 objc_object  拥有 isa</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> objc_class : objc_object &#123;</span><br><span class="line">   <span class="comment">// Class ISA;</span></span><br><span class="line">    Class superclass;</span><br><span class="line">    cache_t cache;  <span class="comment">// formerly cache pointer and vtable</span></span><br><span class="line">    class_data_bits_t bits;    <span class="comment">// class_rw_t * plus custom rr/alloc flags</span></span><br><span class="line">........</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="struct-class-rw-t"><a href="#struct-class-rw-t" class="headerlink" title="struct class_rw_t"></a>struct class_rw_t</h4><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class_rw_t* data() &#123;</span><br><span class="line">       <span class="keyword">return</span> (class_rw_t *)(bits &amp; FAST_DATA_MASK);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>通过位运算  &amp; FAST_DATA_MASK  </p>
+<blockquote>
+<p><code>#define FAST_DATA_MASK          0x00007ffffffffff8UL </code></p>
+</blockquote>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> class_rw_t &#123;</span><br><span class="line">    <span class="comment">// Be warned that Symbolication knows the layout of this structure.</span></span><br><span class="line">    uint32_t flags;</span><br><span class="line">    uint32_t version;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> class_ro_t *ro;  <span class="comment">//类信息</span></span><br><span class="line"></span><br><span class="line">    method_array_t methods; <span class="comment">//方法列表</span></span><br><span class="line">    property_array_t properties; <span class="comment">//属性列表</span></span><br><span class="line">    protocol_array_t protocols; <span class="comment">//协议列表</span></span><br><span class="line"></span><br><span class="line">    Class firstSubclass;</span><br><span class="line">    Class nextSiblingClass;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span> *demangledName;</span><br></pre></td></tr></table></figure>
+
+<h4 id="class-ro-t"><a href="#class-ro-t" class="headerlink" title="class_ro_t"></a>class_ro_t</h4><h4 id=""><a href="#" class="headerlink" title=""></a></h4><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> class_ro_t &#123;</span><br><span class="line">    uint32_t flags;</span><br><span class="line">    uint32_t instanceStart;</span><br><span class="line">    uint32_t instanceSize;  <span class="comment">//实例对象占的内存空间</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __LP64__</span></span><br><span class="line">    uint32_t reserved;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> uint8_t * ivarLayout;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> * name;  <span class="comment">//类名</span></span><br><span class="line">    method_list_t * baseMethodList;</span><br><span class="line">    protocol_list_t * baseProtocols;</span><br><span class="line">    <span class="keyword">const</span> ivar_list_t * ivars;  <span class="comment">//成员变量列表</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> uint8_t * weakIvarLayout;</span><br><span class="line">    property_list_t *baseProperties;</span><br><span class="line"></span><br><span class="line">    method_list_t *baseMethods() <span class="keyword">const</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> baseMethodList;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -197,7 +237,7 @@
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -210,164 +250,117 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yangyuanweitech.com/2021/07/19/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86-%E5%9B%9B-%EF%BC%9AClass%E7%9A%84%E5%BA%95%E5%B1%82%E7%BB%93%E6%9E%84/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/07/19/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86-%E4%B8%89-%EF%BC%9Aisa%E5%92%8Csupperclass%E6%8C%87%E9%92%88/" class="archive-article-date">
-  	<time datetime="2021-07-19T03:27:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-19</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2021/07/19/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86-%E4%B8%89-%EF%BC%9Aisa%E5%92%8Csupperclass%E6%8C%87%E9%92%88/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">底层原理(三) ：isa和supperclass指针</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/07/19/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86-%E4%B8%89-%EF%BC%9Aisa%E5%92%8Csupperclass%E6%8C%87%E9%92%88/">底层原理(三) ：isa和supperclass指针</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">iOS底层原理</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/技术积累//" class="article-tag-list-link color5">技术积累</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#isa%E6%8C%87%E9%92%88"><span class="toc-number">1.</span> <span class="toc-text">isa指针</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#objc4%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD"><span class="toc-number">2.</span> <span class="toc-text">objc4源码下载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AA%A5%E6%8E%A2struct-objc-class%E7%9A%84%E7%BB%93%E6%9E%84"><span class="toc-number">3.</span> <span class="toc-text">窥探struct objc_class的结构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#struct-objc-object"><span class="toc-number">3.0.1.</span> <span class="toc-text">struct objc_object</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#struct-objc-class"><span class="toc-number">3.0.2.</span> <span class="toc-text">struct objc_class</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#struct-class-rw-t"><span class="toc-number">3.0.3.</span> <span class="toc-text">struct class_rw_t</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#class-ro-t"><span class="toc-number">3.0.4.</span> <span class="toc-text">class_ro_t</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">3.0.5.</span> <span class="toc-text"></span></a></li></ol></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/07/14/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9AOC%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%86%E7%B1%BB/" class="archive-article-date">
-  	<time datetime="2021-07-14T02:01:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-14</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/07/14/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9AOC%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%86%E7%B1%BB/">底层原理（二）：OC对象的分类</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">iOS底层原理</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/技术积累//" class="article-tag-list-link color5">技术积累</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/07/12/02-%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9AObject-C%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%9C%AC%E8%B4%A8/" class="archive-article-date">
-  	<time datetime="2021-07-12T02:25:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-12</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/07/12/02-%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9AObject-C%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%9C%AC%E8%B4%A8/">底层原理（一）：Object-C对象的本质</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">iOS底层原理</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/技术积累//" class="article-tag-list-link color5">技术积累</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
 
 
           </div>
@@ -390,10 +383,10 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,
 		root: "/",
